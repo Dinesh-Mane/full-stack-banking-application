@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: banking-backend
+
+  profiles:
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+app:
+  jwt:
+    access-token-expiry-ms: 900000      # 15 minutes
+    refresh-token-expiry-ms: 604800000  # 7 days
+  transfer:
+    max-single-transfer-amount: 500000
+    otp-required-above-amount: 50000
