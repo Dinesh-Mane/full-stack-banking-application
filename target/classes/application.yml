@@ -1,21 +1,15 @@
-# =====================================================================
-# BASE CONFIG — values common to every environment.
-# Environment-specific overrides go in application-{profile}.yml
-# (e.g. application-dev.yml, application-prod.yml)
-# =====================================================================
-
 spring:
   application:
     name: banking-backend
 
   profiles:
-    active: dev   # default profile when none is passed; override with -Dspring.profiles.active=prod
+    active: dev
 
   jpa:
     hibernate:
-      ddl-auto: validate   # NEVER 'update' in a real project — Flyway owns the schema, Hibernate just validates it matches
+      ddl-auto: validate
     show-sql: false
-    open-in-view: false    # IMPORTANT: prevents lazy-loading queries from leaking into the view layer; forces us to fetch what we need in the service layer
+    open-in-view: false
     properties:
       hibernate:
         format_sql: true
@@ -25,7 +19,6 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
 
-# ---- Actuator: expose only what's needed, never expose everything in prod ----
 management:
   endpoints:
     web:
@@ -35,7 +28,6 @@ management:
     health:
       show-details: when-authorized
 
-# ---- App-specific custom properties (bound via @ConfigurationProperties later) ----
 app:
   jwt:
     access-token-expiry-ms: 900000      # 15 minutes

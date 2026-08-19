@@ -1,15 +1,4 @@
--- =====================================================================
--- V1__init_schema.sql
--- Flyway migration: initial schema (users, accounts)
---
--- NAMING CONVENTION (important, Flyway is strict about this):
---   V<version>__<description>.sql   (TWO underscores after the version)
---   Once this file is applied to any environment, NEVER edit it again.
---   Any change = a NEW migration file (V2__..., V3__...).
---   This is what makes migrations safe across dev/staging/prod.
--- =====================================================================
-
--- ---------- USERS ----------
+-- Create users table
 CREATE TABLE users (
     id              BIGSERIAL PRIMARY KEY,
     full_name       VARCHAR(150)        NOT NULL,
@@ -26,13 +15,9 @@ CREATE TABLE users (
     CONSTRAINT chk_users_kyc_status CHECK (kyc_status IN ('PENDING', 'VERIFIED', 'REJECTED'))
 );
 
--- Email is how we'll look up users on every login -> needs an index.
--- (UNIQUE constraint above already creates one implicitly in Postgres,
---  but being explicit here documents the intent for future readers.)
 CREATE INDEX idx_users_email ON users (email);
 
-
--- ---------- ACCOUNTS ----------
+-- Create accounts table
 CREATE TABLE accounts (
     id              BIGSERIAL PRIMARY KEY,
     account_number  VARCHAR(20)         NOT NULL,
@@ -51,7 +36,5 @@ CREATE TABLE accounts (
     CONSTRAINT chk_accounts_balance_non_negative CHECK (balance >= 0)
 );
 
--- We will constantly query "give me all accounts for this user" (dashboard)
--- and "find account by account_number" (transfers) -> both need indexes.
 CREATE INDEX idx_accounts_user_id ON accounts (user_id);
 CREATE INDEX idx_accounts_account_number ON accounts (account_number);
