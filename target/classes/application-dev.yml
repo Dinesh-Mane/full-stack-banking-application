@@ -1,0 +1,48 @@
+# =====================================================================
+# DEV PROFILE — local development settings.
+# Notice: NO secrets are hardcoded here. Everything sensitive reads from
+# environment variables with a local-friendly fallback after the colon.
+# This is the pattern you carry into application-prod.yml too (just
+# without any fallback values, so prod FAILS FAST if a secret is missing).
+# =====================================================================
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:bankingdb}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+
+  jpa:
+    show-sql: true   # ok to see generated SQL locally; keep false in prod
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}   # 1025 = MailHog / MailDev local SMTP catcher, no real emails sent in dev
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:this-is-a-local-dev-only-secret-replace-me-32chars-min}
+
+logging:
+  level:
+    com.bankapp: DEBUG
+    org.springframework.security: DEBUG
