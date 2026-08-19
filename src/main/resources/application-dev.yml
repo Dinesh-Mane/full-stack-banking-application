@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME:}
-    username: ${DB_USERNAME:}
-    password: ${DB_PASSWORD:}
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:bankapp-backend}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:springstudent}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 2
